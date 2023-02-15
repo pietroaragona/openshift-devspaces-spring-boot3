@@ -1,0 +1,35 @@
+schemaVersion: 2.2.0
+metadata:
+  name: SpringBoot 3
+#attributes:
+#  controller.devfile.io/storage-type: ephemeral
+components:
+  - name: tools
+    container:
+      image: quay.io/devfile/universal-developer-image:ubi8-latest
+      env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-17-openjdk
+        - name: spring_profiles_active
+          value: devspaces
+        - name: MAVEN_OPTS
+          value: "-Dmaven.wagon.http.ssl.insecure=true"
+      endpoints:
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 5005
+        - exposure: public
+          name: app
+          protocol: http
+          targetPort: 8080
+          path: /
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+      memoryLimit: 3G
+      mountSources: true
+
+  - name: m2
+    volume:
+      size: 2G
