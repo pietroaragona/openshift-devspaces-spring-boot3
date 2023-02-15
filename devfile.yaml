@@ -1,6 +1,6 @@
 schemaVersion: 2.2.0
 metadata:
-  name: SpringBoot 3
+  name: SpringBoot 3 v2
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
 components:
@@ -8,8 +8,8 @@ components:
     container:
       image: quay.io/devfile/universal-developer-image:ubi8-latest
       env:
-        - name: JAVA_HOME
-          value: /usr/lib/jvm/java-17-openjdk
+#        - name: JAVA_HOME
+#          value: /usr/lib/jvm/java-17-openjdk
         - name: spring_profiles_active
           value: devspaces
         - name: MAVEN_OPTS
@@ -33,3 +33,71 @@ components:
   - name: m2
     volume:
       size: 2G
+
+
+  - name: kafka
+    kubernetes:
+      uri: 'https://alm-repos.sogei.it/repository/codeready-plugins/assets/kafka-deployment-v0.3.yaml'
+      endpoints:
+        - name: kafka-broker
+          targetPort: 9092
+        - name: kafka-ui
+          targetPort: 8888
+          path: /
+
+  - name: oracle
+    container:
+      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
+      command:
+        - sleep
+        - infinity
+      memoryLimit: 768Mi
+      mountSources: true
+
+commands:
+  - id: initial-setup
+    exec:
+      label: 0. Initial Setup
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v1.sh | bash
+
+  - id: setup-databases
+    exec:
+      label: 1. Setup Microservices Databases
+      component: oracle
+      commandLine: |
+        ORACLE_SYS_PASSWORD=nir_service
+        ORACLE_DB_NAME=nir_service
+        
+        DB_HOST=oracle.common-ptt
+        DB_USER_PREFIX=${DEVWORKSPACE_NAMESPACE//-/}
+        DB_PASSWORD=changeit
+        
+        function configure_microservice_schema {
+        
+        MICROSERVICE=$1          
+        DB_USER=${DB_USER_PREFIX}_${MICROSERVICE//-/}
+        
+        /opt/oracle/createDevUser.sh  ${DB_HOST} \
+        ${ORACLE_SYS_PASSWORD} ${ORACLE_DB_NAME} \
+        ${DB_USER} ${DB_PASSWORD}
+        
+        echo "Configuration successful for Microservice ${MICROSERVICE}!"
+        echo "Username: ${DB_USER}"
+        echo "Password: ${DB_PASSWORD}"
+        
+        SPRING_BOOT_TEST_FOLDER=${PROJECTS_ROOT}/${MICROSERVICE}/src/test/resources
+        SPRING_BOOT_TEST_PROPERTIES_FILE=${SPRING_BOOT_TEST_FOLDER}/application-devspace.properties
+        mkdir -p ${SPRING_BOOT_TEST_FOLDER}
+        
+        cat <<EOF > ${SPRING_BOOT_TEST_PROPERTIES_FILE}
+        spring.datasource.url=jdbc:oracle:thin:@${DB_HOST}:1521/${ORACLE_DB_NAME}
+        spring.datasource.username=${DB_USER}
+        spring.datasource.password=${DB_PASSWORD}
+        spring.kafka.bootstrap-servers=localhost:29092
+        EOF
+        }
+        
+        configure_microservice_schema ms-nir
+        configure_microservice_schema ms-doc
