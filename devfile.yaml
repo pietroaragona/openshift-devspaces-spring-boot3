@@ -35,16 +35,30 @@ components:
       size: 2G
 
 
+#  - name: kafka
+#    openshift:
+#      uri: 'https://raw.githubusercontent.com/pietroaragona/openshift-devspaces-assets/main/kafka-deployment-v0.3.yaml'
+#      endpoints:
+#        - name: kafka-broker
+#          targetPort: 9092
+#        - name: kafka-ui
+#          targetPort: 8888
+#          path: /
+
   - name: kafka
-    openshift:
-      uri: 'https://raw.githubusercontent.com/pietroaragona/openshift-devspaces-assets/main/kafka-deployment-v0.3.yaml'
-      endpoints:
-        - name: kafka-broker
-          targetPort: 9092
-        - name: kafka-ui
-          targetPort: 8888
-          path: /
-#
+    kubernetes:
+      inlined:
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: kafka
+        spec:
+          containers:
+            - image: docker.io/lsnidero/kafka
+              name: kafka
+              ports:
+                - name: broker-9092
+                  containerPort: 9092
 #  - name: oracle
 #    container:
 #      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
