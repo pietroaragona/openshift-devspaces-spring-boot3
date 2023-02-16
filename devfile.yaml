@@ -1,6 +1,6 @@
 schemaVersion: 2.2.0
 metadata:
-  name: SpringBoot 3 v2
+  name: SpringBoot 3 v3
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
 components:
@@ -35,15 +35,15 @@ components:
       size: 2G
 
 
-#  - name: kafka
-#    kubernetes:
-#      uri: 'https://alm-repos.sogei.it/repository/codeready-plugins/assets/kafka-deployment-v0.3.yaml'
-#      endpoints:
-#        - name: kafka-broker
-#          targetPort: 9092
-#        - name: kafka-ui
-#          targetPort: 8888
-#          path: /
+  - name: kafka
+    kubernetes:
+      uri: 'https://alm-repos.sogei.it/repository/codeready-plugins/assets/kafka-deployment-v0.3.yaml'
+      endpoints:
+        - name: kafka-broker
+          targetPort: 9092
+        - name: kafka-ui
+          targetPort: 8888
+          path: /
 #
 #  - name: oracle
 #    container:
@@ -60,7 +60,7 @@ commands:
       label: 0. Initial Setup
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v1.sh | bash
+      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v2.sh | bash
 
   - id: setup-databases
     exec:
