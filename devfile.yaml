@@ -36,7 +36,7 @@ components:
 
 
   - name: kafka
-    kubernetes:
+    openshift:
       uri: 'https://raw.githubusercontent.com/pietroaragona/openshift-devspaces-assets/main/kafka-deployment-v0.3.yaml'
       endpoints:
         - name: kafka-broker
