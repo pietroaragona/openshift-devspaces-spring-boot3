@@ -1,6 +1,6 @@
 schemaVersion: 2.2.0
 metadata:
-  name: SpringBoot 3 v3
+  name: SpringBoot 3 v4
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
 components:
