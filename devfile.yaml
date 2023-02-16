@@ -35,24 +35,24 @@ components:
       size: 2G
 
 
-  - name: kafka
-    kubernetes:
-      uri: 'https://alm-repos.sogei.it/repository/codeready-plugins/assets/kafka-deployment-v0.3.yaml'
-      endpoints:
-        - name: kafka-broker
-          targetPort: 9092
-        - name: kafka-ui
-          targetPort: 8888
-          path: /
-
-  - name: oracle
-    container:
-      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
-      command:
-        - sleep
-        - infinity
-      memoryLimit: 768Mi
-      mountSources: true
+#  - name: kafka
+#    kubernetes:
+#      uri: 'https://alm-repos.sogei.it/repository/codeready-plugins/assets/kafka-deployment-v0.3.yaml'
+#      endpoints:
+#        - name: kafka-broker
+#          targetPort: 9092
+#        - name: kafka-ui
+#          targetPort: 8888
+#          path: /
+#
+#  - name: oracle
+#    container:
+#      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
+#      command:
+#        - sleep
+#        - infinity
+#      memoryLimit: 768Mi
+#      mountSources: true
 
 commands:
   - id: initial-setup
