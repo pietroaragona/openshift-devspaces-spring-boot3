@@ -61,15 +61,22 @@ components:
 #                - name: broker-9092
 #                  containerPort: 9092
 
-  - name: kafka
-    openshift:
-      uri: 'kafka-deployment-v0.3.yaml'
-      endpoints:
-        - name: kafka-broker
-          targetPort: 9092
-        - name: kafka-ui
-          targetPort: 8888
-          path: /
+#  - name: kafka
+#    openshift:
+#      uri: 'kafka-deployment-v0.3.yaml'
+#      endpoints:
+#        - name: kafka-broker
+#          targetPort: 9092
+#        - name: kafka-ui
+#          targetPort: 8888
+#          path: /
+
+- name: kafka
+  container:
+    image: docker.io/lsnidero/kafka
+    endpoints:
+      - name: kafka-broker
+        targetPort: 9092
 
 
 #  - name: oracle
