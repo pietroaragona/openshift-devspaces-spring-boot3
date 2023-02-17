@@ -81,6 +81,9 @@ components:
         - name: zookeeper-vol
           path: /var/lib/zookeeper
 
+  - name: zookeeper-vol
+    volume:
+      size: 1G
 
 #  - name: oracle
 #    container:
