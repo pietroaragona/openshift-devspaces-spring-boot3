@@ -74,9 +74,9 @@ components:
 - name: kafka
   container:
     image: docker.io/lsnidero/kafka
-    endpoints:
-      - name: kafka-broker
-        targetPort: 9092
+#    endpoints:
+#      - name: kafka-broker
+#        targetPort: 9092
 
 
 #  - name: oracle
