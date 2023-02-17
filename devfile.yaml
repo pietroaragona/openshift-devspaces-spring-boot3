@@ -71,18 +71,36 @@ components:
 #          targetPort: 8888
 #          path: /
 
-  - name: kafka
-    container:
-      image: docker.io/lsnidero/kafka
-      endpoints:
-        - name: kafka-broker
-          targetPort: 9092
-        - name: zookeeper
-          targetPort: 2181
-          exposure: internal
-      volumeMounts:
-        - name: zookeeper-vol
-          path: /var/lib/zookeeper
+#  - name: kafka
+#    container:
+#      image: docker.io/lsnidero/kafka
+#      endpoints:
+#        - name: kafka-broker
+#          targetPort: 9092
+#        - name: zookeeper
+#          targetPort: 2181
+#          exposure: internal
+#      volumeMounts:
+#        - name: zookeeper-vol
+#          path: /var/lib/zookeeper
+
+    - name: nginx
+      kubernetes:
+        deployByDefault: true
+        inlined: |
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: kafka
+          spec:
+            containers:
+              - image: docker.io/nginx
+                name: kafka
+                ports:
+                  - name: broker-9092
+                    containerPort: 80
+
+    
 
   - name: zookeeper-vol
     volume:
