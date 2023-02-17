@@ -77,6 +77,9 @@ components:
       endpoints:
         - name: kafka-broker
           targetPort: 9092
+      volumeMounts:
+        - name: zookeeper-vol
+          path: /var/lib/zookeeper
 
 
 #  - name: oracle
