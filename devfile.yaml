@@ -45,21 +45,32 @@ components:
 #          targetPort: 8888
 #          path: /
 
+#  - name: kafka
+#    kubernetes:
+#      deployByDefault: true
+#      inlined: |
+#        apiVersion: v1
+#        kind: Pod
+#        metadata:
+#          name: kafka
+#        spec:
+#          containers:
+#            - image: docker.io/lsnidero/kafka
+#              name: kafka
+#              ports:
+#                - name: broker-9092
+#                  containerPort: 9092
+
   - name: kafka
-    kubernetes:
-      deployByDefault: true
-      inlined: |
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          name: kafka
-        spec:
-          containers:
-            - image: docker.io/lsnidero/kafka
-              name: kafka
-              ports:
-                - name: broker-9092
-                  containerPort: 9092
+    openshift:
+      uri: 'kafka-deployment-v0.3.yaml'
+      endpoints:
+        - name: kafka-broker
+          targetPort: 9092
+        - name: kafka-ui
+          targetPort: 8888
+          path: /
+
 
 #  - name: oracle
 #    container:
