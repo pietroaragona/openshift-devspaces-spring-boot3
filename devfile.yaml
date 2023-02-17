@@ -1,6 +1,6 @@
 schemaVersion: 2.2.0
 metadata:
-  name: SpringBoot 3 v4
+  name: SpringBoot 3 v5
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
 components:
@@ -47,6 +47,7 @@ components:
 
   - name: kafka
     kubernetes:
+      deployByDefault: true
       inlined: |
         apiVersion: v1
         kind: Pod
@@ -59,6 +60,7 @@ components:
               ports:
                 - name: broker-9092
                   containerPort: 9092
+
 #  - name: oracle
 #    container:
 #      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
@@ -74,7 +76,7 @@ commands:
       label: 0. Initial Setup
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v2.sh | bash
+      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v3.sh | bash
 
   - id: setup-databases
     exec:
