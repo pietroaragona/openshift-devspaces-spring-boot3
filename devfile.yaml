@@ -71,12 +71,12 @@ components:
 #          targetPort: 8888
 #          path: /
 
-#  - name: kafka
-#    container:
-#      image: docker.io/lsnidero/kafka
-#      endpoints:
-#        - name: kafka-broker
-#          targetPort: 9092
+  - name: kafka
+    container:
+      image: docker.io/lsnidero/kafka
+      endpoints:
+        - name: kafka-broker
+          targetPort: 9092
 
 
 #  - name: oracle
