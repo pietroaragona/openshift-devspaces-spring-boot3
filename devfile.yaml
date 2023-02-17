@@ -84,21 +84,21 @@ components:
 #        - name: zookeeper-vol
 #          path: /var/lib/zookeeper
 
-    - name: nginx
-      kubernetes:
-        deployByDefault: true
-        inlined: |
-          apiVersion: v1
-          kind: Pod
-          metadata:
-            name: kafka
-          spec:
-            containers:
-              - image: docker.io/nginx
-                name: kafka
-                ports:
-                  - name: broker-9092
-                    containerPort: 80
+  - name: nginx
+    kubernetes:
+      deployByDefault: true
+      inlined: |
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: kafka
+        spec:
+          containers:
+            - image: docker.io/nginx
+              name: kafka
+              ports:
+                - name: broker-9092
+                  containerPort: 80
 
     
 
