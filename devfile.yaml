@@ -88,17 +88,24 @@ components:
     kubernetes:
       deployByDefault: true
       inlined: |
-        apiVersion: v1
-        kind: Pod
+        apiVersion: apps/v1
+        kind: Deployment
         metadata:
-          name: kafka
+          name: nginx
         spec:
-          containers:
-            - image: docker.io/nginxinc/nginx-unprivileged
-              name: kafka
-              ports:
-                - name: broker-9092
-                  containerPort: 80
+          selector:
+            matchLabels:
+              app: nginx
+          template:
+            metadata:
+              labels:
+                app: nginx
+            spec:
+              containers:
+                - name: nginx
+                  image: nginxinc/nginx-unprivileged
+                  ports:
+                    - containerPort: 80
 
     
 
