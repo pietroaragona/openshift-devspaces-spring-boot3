@@ -137,8 +137,8 @@ commands:
       label: 1. Setup Microservices Databases
       component: oracle
       commandLine: |
-        ORACLE_SYS_PASSWORD=nir_service
-        ORACLE_DB_NAME=nir_service
+        ORACLE_SYS_PASSWORD=ptt_database
+        ORACLE_DB_NAME=ptt_database
         
         DB_HOST=oracle.common-ptt
         DB_USER_PREFIX=${DEVWORKSPACE_NAMESPACE//-/}
@@ -165,7 +165,7 @@ commands:
         spring.datasource.url=jdbc:oracle:thin:@${DB_HOST}:1521/${ORACLE_DB_NAME}
         spring.datasource.username=${DB_USER}
         spring.datasource.password=${DB_PASSWORD}
-        spring.kafka.bootstrap-servers=localhost:29092
+        spring.kafka.bootstrap-servers=localhost:9092
         EOF
         }
         
