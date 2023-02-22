@@ -80,9 +80,9 @@ components:
         - name: zookeeper
           targetPort: 2181
           exposure: internal
-#      volumeMounts:
-#        - name: zookeeper-vol
-#          path: /var/lib/zookeeper
+      volumeMounts:
+        - name: zookeeper-vol
+          path: /var/lib/zookeeper
       memoryLimit: 768Mi
       mountSources: true
 
@@ -111,9 +111,11 @@ components:
 
     
 
-#  - name: zookeeper-vol
-#    volume:
-#      size: 1G
+  - name: zookeeper-vol
+    volume:
+      size: 1G
+      ephemeral: true
+
 
   - name: oracle
     container:
