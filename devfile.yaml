@@ -113,14 +113,14 @@ components:
     volume:
       size: 1G
 
-#  - name: oracle
-#    container:
-#      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
-#      command:
-#        - sleep
-#        - infinity
-#      memoryLimit: 768Mi
-#      mountSources: true
+  - name: oracle
+    container:
+      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
+      command:
+        - sleep
+        - infinity
+      memoryLimit: 768Mi
+      mountSources: true
 
 commands:
   - id: initial-setup
