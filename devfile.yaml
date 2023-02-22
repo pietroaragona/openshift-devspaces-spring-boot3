@@ -28,7 +28,7 @@ components:
         - name: m2
           path: /home/user/.m2
       memoryLimit: 3G
-      cpuLimit: 1000m
+      cpuLimit: 1500m
       cpuRequest: 400m
       mountSources: true
 
@@ -134,7 +134,7 @@ commands:
       label: 0. Initial Setup
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v4.sh | bash
+      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v5.sh | bash
 
   - id: setup-databases
     exec:
