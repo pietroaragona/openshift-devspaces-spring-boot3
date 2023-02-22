@@ -83,6 +83,8 @@ components:
       volumeMounts:
         - name: zookeeper-vol
           path: /var/lib/zookeeper
+      memoryLimit: 768Mi
+      mountSources: true
 
 #  - name: nginx
 #    kubernetes:
