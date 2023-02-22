@@ -84,28 +84,28 @@ components:
 #        - name: zookeeper-vol
 #          path: /var/lib/zookeeper
 
-  - name: nginx
-    kubernetes:
-      deployByDefault: true
-      inlined: |
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: nginx
-        spec:
-          selector:
-            matchLabels:
-              app: nginx
-          template:
-            metadata:
-              labels:
-                app: nginx
-            spec:
-              containers:
-                - name: nginx
-                  image: nginxinc/nginx-unprivileged
-                  ports:
-                    - containerPort: 80
+#  - name: nginx
+#    kubernetes:
+#      deployByDefault: true
+#      inlined: |
+#        apiVersion: apps/v1
+#        kind: Deployment
+#        metadata:
+#          name: nginx
+#        spec:
+#          selector:
+#            matchLabels:
+#              app: nginx
+#          template:
+#            metadata:
+#              labels:
+#                app: nginx
+#            spec:
+#              containers:
+#                - name: nginx
+#                  image: nginxinc/nginx-unprivileged
+#                  ports:
+#                    - containerPort: 80
 
     
 
