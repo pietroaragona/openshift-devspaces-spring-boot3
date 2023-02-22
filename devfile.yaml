@@ -28,6 +28,8 @@ components:
         - name: m2
           path: /home/user/.m2
       memoryLimit: 3G
+      cpuLimit: 1000m
+      cpuRequest: 400m
       mountSources: true
 
   - name: m2
@@ -160,7 +162,7 @@ commands:
         echo "Password: ${DB_PASSWORD}"
         
         SPRING_BOOT_TEST_FOLDER=${PROJECTS_ROOT}/${MICROSERVICE}/src/test/resources
-        SPRING_BOOT_TEST_PROPERTIES_FILE=${SPRING_BOOT_TEST_FOLDER}/application-devspace.properties
+        SPRING_BOOT_TEST_PROPERTIES_FILE=${SPRING_BOOT_TEST_FOLDER}/application-devspaces.properties
         mkdir -p ${SPRING_BOOT_TEST_FOLDER}
         
         cat <<EOF > ${SPRING_BOOT_TEST_PROPERTIES_FILE}
