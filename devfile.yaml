@@ -128,7 +128,7 @@ commands:
       label: 0. Initial Setup
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v3.sh | bash
+      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v4.sh | bash
 
   - id: setup-databases
     exec:
