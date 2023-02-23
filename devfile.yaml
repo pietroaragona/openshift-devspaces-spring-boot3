@@ -118,6 +118,26 @@ components:
       size: 1G
       ephemeral: true
 
+  - name: kafka-ui
+    container:
+      image: provectuslabs/kafka-ui:v0.5.0
+      endpoints:
+        - name: kafka-ui
+          targetPort: 8888
+      memoryLimit: 1024Mi
+      cpuLimit: 500m
+      cpuRequest: 10m
+      env:
+        - name: KAFKA_CLUSTERS_0_NAMEl
+          value: local
+        - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+          value: localhost:9092
+        - name: KAFKA_CLUSTERS_0_ZOOKEEPER
+          value: localhost:2181
+        - name: KAFKA_CLUSTERS_0_READONLY
+          value: "false"
+        - name: SERVER_PORT
+          value: "8888"
 
   - name: oracle
     container:
