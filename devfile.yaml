@@ -201,7 +201,9 @@ commands:
         
         SPRING_BOOT_TEST_FOLDER=${PROJECTS_ROOT}/${MICROSERVICE}/src/test/resources
         SPRING_BOOT_TEST_PROPERTIES_FILE=${SPRING_BOOT_TEST_FOLDER}/application-devspaces.properties
-        mkdir -p ${SPRING_BOOT_TEST_FOLDER}
+        SPRING_BOOT_MAIN_FOLDER=${PROJECTS_ROOT}/${MICROSERVICE}/src/main/resources
+        SPRING_BOOT_MAIN_PROPERTIES_FILE=${SPRING_BOOT_MAIN_FOLDER}/application-devspaces.properties
+        mkdir -p ${SPRING_BOOT_TEST_FOLDER} ${SPRING_BOOT_MAIN_FOLDER}
         
         cat <<EOF > ${SPRING_BOOT_TEST_PROPERTIES_FILE}
         spring.datasource.url=jdbc:oracle:thin:@${DB_HOST}:1521/${ORACLE_DB_NAME}
@@ -209,6 +211,8 @@ commands:
         spring.datasource.password=${DB_PASSWORD}
         spring.kafka.bootstrap-servers=localhost:9092
         EOF
+        
+        cp ${SPRING_BOOT_TEST_PROPERTIES_FILE} ${SPRING_BOOT_MAIN_PROPERTIES_FILE}
         }
         
         configure_microservice_schema ms-nir
