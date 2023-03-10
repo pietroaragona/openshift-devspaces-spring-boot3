@@ -1,19 +1,17 @@
 schemaVersion: 2.2.0
 metadata:
-  name: SpringBoot 3 v5
+  name: PTT
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
 components:
   - name: tools
     container:
-      image: quay.io/devfile/universal-developer-image:ubi8-latest
+      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2
       env:
-#        - name: JAVA_HOME
-#          value: /usr/lib/jvm/java-17-openjdk
         - name: spring_profiles_active
           value: devspaces
-        - name: MAVEN_OPTS
-          value: "-Dmaven.wagon.http.ssl.insecure=true"
+#        - name: MAVEN_OPTS
+#          value: "-Dmaven.wagon.http.ssl.insecure=true"
       endpoints:
         - exposure: none
           name: debug
@@ -23,6 +21,11 @@ components:
           name: app
           protocol: http
           targetPort: 8080
+          path: /
+        - exposure: public
+          name: app-nir
+          protocol: http
+          targetPort: 5001
           path: /
       volumeMounts:
         - name: m2
@@ -149,16 +152,31 @@ components:
       mountSources: true
 
 commands:
-  - id: initial-setup
+#  - id: install-plugins
+#    exec:
+#      label: 0.1 - Initial Plugins
+#      component: tools
+#      workingDir: ${PROJECTS_ROOT}
+#      commandLine: |
+#        curl https://openvsxorg.blob.core.windows.net/resources/redhat/java/linux-x64/1.16.2023030303/redhat.java-1.16.2023030303@linux-x64.vsix -O
+#        code-oss --install-extension redhat.java-1.16.2023030303\@linux-x64.vsix
+#        rm -f redhat.java-1.16.2023030303\@linux-x64.vsix
+#
+#        /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "vscjava.vscode-java-pack"
+#        /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "pivotal.vscode-boot-dev-pack"
+#        /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "sonarsource.sonarlint-vscode"
+#        # /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "redhat.fabric8-analytics"
+
+  - id: setup-environment
     exec:
-      label: 0. Initial Setup
+      label: 0.1 - Initial Environment Setup
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -sk https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v6.1.sh | bash
+      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v8.sh | bash
 
   - id: setup-databases
     exec:
-      label: 1. Setup Microservices Databases
+      label: 0.2 Initial Microservices Databases Setup
       component: oracle
       commandLine: |
         ORACLE_SYS_PASSWORD=ptt_database
@@ -195,3 +213,34 @@ commands:
         
         configure_microservice_schema ms-nir
         configure_microservice_schema ms-doc
+
+
+
+
+
+  - id: run-debug
+    exec:
+      label: 1 - Run Debug
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        mvn spring-boot:run -DskipTests \
+        -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005,quiet=y'
+      group:
+        kind: run
+        isDefault: true
+
+
+  - id: composite-initial-setup
+    composite:
+      commands:
+        - install-plugins
+        - setup-environment
+        - setup-databases
+
+#events:
+#  postStart:
+#    - composite-initial-setup
+##    - install-plugins
+##    - setup-environment
+##    - setup-databases
