@@ -23,10 +23,10 @@ components:
           targetPort: 8080
           path: /
         - exposure: public
-          name: app-nir
+          name: ms-nir
           protocol: http
           targetPort: 5001
-          path: /
+          path: /nir/1
       volumeMounts:
         - name: m2
           path: /home/user/.m2
