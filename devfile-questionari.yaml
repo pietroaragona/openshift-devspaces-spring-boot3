@@ -60,6 +60,12 @@ commands:
         # configure git credential.helper
         git config --global credential.helper 'cache --timeout 36000'
 
+  - id: download-repos
+    exec:
+      label: 0.1 - Download Repos
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/setup-questionari-v1.sh | bash
 
   - id: run-debug
     exec:
