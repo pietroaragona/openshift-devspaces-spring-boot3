@@ -1,0 +1,84 @@
+# devfile-questionari.yaml
+# TP:   TP-ENT-SA-0166
+# Desc: Registro dei Questionari e Inviti
+schemaVersion: 2.2.0
+metadata:
+  name: Questionari
+#attributes:
+#  controller.devfile.io/storage-type: ephemeral
+components:
+  - name: tools
+    container:
+      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2
+      # env:
+      #   - name: spring_profiles_active
+      #     value: devspaces
+      endpoints:
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 7777
+        - exposure: public
+          name: app
+          protocol: http
+          targetPort: 8080
+          path: /
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+      memoryLimit: 3G
+      cpuLimit: 1500m
+      cpuRequest: 400m
+      mountSources: true
+
+  - name: m2
+    volume:
+      size: 2G
+
+commands:
+  - id: setup-environment
+    exec:
+      label: 0.1 - Initial Environment Setup
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: |
+        # set java version
+        . /home/user/.sdkman/bin/sdkman-init.sh
+        sdk install java 17.0.6-tem
+        sdk default java 17.0.6-tem
+
+        # configure settings.xml and .npmrc
+        setup_configurations_files(){
+          MVN_SETTINGS_REMOTE="https://alm-repos.sogei.it/repository/codeready-plugins/assets/settings-https-v1.xml"
+          mkdir -p /home/user/.m2
+          wget  -q --no-check-certificate $MVN_SETTINGS_REMOTE -O /home/user/.m2/settings.xml
+          
+          echo registry=https://alm-repos.sogei.it/repository/npm-group/ > /home/user/.npmrc
+        }
+        setup_configurations_files
+
+        # configure git credential.helper
+        git config --global credential.helper 'cache --timeout 36000'
+
+
+  - id: run-debug
+    exec:
+      label: 1 - Run Debug
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        mvn liberty:debug -DskipTests'
+      group:
+        kind: run
+        isDefault: true
+
+
+  # - id: composite-initial-setup
+  #   composite:
+  #     commands:
+  #       - setup-environment
+
+events:
+  postStart:
+    - setup-environment
+
