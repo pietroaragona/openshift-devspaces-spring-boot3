@@ -9,7 +9,7 @@ metadata:
 components:
   - name: tools
     container:
-      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2
+      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.1
       # env:
       #   - name: spring_profiles_active
       #     value: devspaces
@@ -44,8 +44,8 @@ commands:
       commandLine: |
         # set java version
         . /home/user/.sdkman/bin/sdkman-init.sh
-        sdk install java 17.0.6-tem
-        sdk default java 17.0.6-tem
+        sdk install java 8.0.332-tem
+        sdk default java 8.0.332-tem
 
         # configure settings.xml and .npmrc
         setup_configurations_files(){
