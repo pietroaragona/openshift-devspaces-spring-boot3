@@ -9,10 +9,10 @@ metadata:
 components:
   - name: tools
     container:
-      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.1
-      # env:
-      #   - name: spring_profiles_active
-      #     value: devspaces
+      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.2
+      env:
+        - name: spring_profiles_active
+          value: devspaces
       endpoints:
         - exposure: none
           name: debug
@@ -23,6 +23,47 @@ components:
           protocol: http
           targetPort: 8080
           path: /
+        - exposure: public
+          name: gest-vertenze
+          protocol: http
+          targetPort: 9071
+          path: /
+        - exposure: public
+          name: listestatiche
+          protocol: http
+          targetPort: 9075
+          path: /
+        - exposure: public
+          name: sigit-bff
+          protocol: http
+          targetPort: 9070
+          path: /
+        - exposure: public
+          name: gest-eudienze
+          protocol: http
+          targetPort: 9072
+          path: /
+        - exposure: public
+          name: gest-pec
+          protocol: http
+          targetPort: 9079
+          path: /
+        - exposure: public
+          name: gest-utenti
+          protocol: http
+          targetPort: 9074
+          path: /
+        - exposure: public
+          name: ms-nir
+          protocol: http
+          targetPort: 5001
+          path: /
+        - exposure: public
+          name: sigit-spa
+          protocol: http
+          targetPort: 3008
+          path: /
+
       volumeMounts:
         - name: m2
           path: /home/user/.m2
