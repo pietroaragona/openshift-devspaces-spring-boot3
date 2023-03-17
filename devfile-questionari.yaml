@@ -60,9 +60,47 @@ commands:
         # configure git credential.helper
         git config --global credential.helper 'cache --timeout 36000'
 
+  - id: install-cadmanager-jars
+    exec:
+      label: 0.2 - Install CadManager Jars
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: |
+        echo ciao pippo
+        POM_FILE=/tmp/miopom.xml
+        CADMANAGER_FILE=/tmp/CadManager.jar
+        CADMANAGERWSCLIENT_FILE=/tmp/CadManagerWebServiceClient.jar.jar
+
+        cat <<EOF > $POM_FILE
+        <?xml version="1.0" encoding="UTF-8"?>
+        <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+        <groupId>it.sogei.entrate.questionari</groupId>
+        <artifactId>install-jars</artifactId>
+        <version>1</version>
+        </project>
+        EOF
+
+        upload_1(){
+          curl https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/CadManager.jar -o $CADMANAGER_FILE
+          mvn -f $POM_FILE install:install-file -Dfile=$CADMANAGER_FILE -DgroupId=it.entrate.consumer.cad -DartifactId=CadManager -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+          rm -f $CADMANAGER_FILE
+        }
+
+        upload_2(){
+          curl https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/CadManagerWebServiceClient.jar -o $CADMANAGERWSCLIENT_FILE
+          mvn -f $POM_FILE install:install-file -Dfile=$CADMANAGERWSCLIENT_FILE -DgroupId=it.entrate.cad -DartifactId=CadManagerWebServiceClient -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+          rm -f $CADMANAGERWSCLIENT_FILE
+        }
+
+        upload_1
+        upload_2
+
+        rm -f $POM_FILE
+
   - id: download-repos
     exec:
-      label: 0.1 - Download Repos
+      label: 0.9 - Download Repos
       component: tools
       workingDir: ${PROJECTS_ROOT}
       commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/setup-questionari-v1.sh | bash
@@ -79,11 +117,11 @@ commands:
         isDefault: true
 
 
-  # - id: composite-initial-setup
-  #   composite:
-  #     commands:
-  #       - setup-environment
-
+#   - id: composite-initial-setup
+#     composite:
+#       commands:
+##         - setup-environment
+#         - install-cadmanager-jars
 events:
   postStart:
     - setup-environment
