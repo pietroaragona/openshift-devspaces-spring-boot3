@@ -10,18 +10,20 @@ components:
   - name: tools
     container:
       image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.2
-      # env:
-      #   - name: spring_profiles_active
-      #     value: devspaces
+      env:
+#        - name: spring_profiles_active
+#          value: devspaces
+        - name: QUESTIONARI_BE_ROOT
+          value: /projects/questionari-inviti-be/QUESTIONARI
       endpoints:
         - exposure: none
           name: debug
           protocol: tcp
           targetPort: 7777
         - exposure: public
-          name: app
+          name: app-be
           protocol: http
-          targetPort: 8080
+          targetPort: 9080
           path: /
       volumeMounts:
         - name: m2
@@ -107,15 +109,51 @@ commands:
 
   - id: run-debug
     exec:
-      label: 1 - Run Debug
+      label: 1 - Run liberty:debug
       component: tools
       workingDir: ${PROJECT_SOURCE}
       commandLine: |
-        mvn liberty:debug -DskipTests'
+        mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:debug
+      group:
+        kind: run
+        isDefault: false
+
+  - id: run-dev
+    exec:
+      label: 2 - Run liberty:dev
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:dev
       group:
         kind: run
         isDefault: true
 
+  - id: run-start
+    exec:
+      label: 3 - Run liberty:start
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:start
+      group:
+        kind: run
+        isDefault: false
+
+  - id: run-stop
+    exec:
+      label: 4 - Run liberty:stop
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        #mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:stop
+      group:
+        kind: run
+        isDefault: false
 
 #   - id: composite-initial-setup
 #     composite:
