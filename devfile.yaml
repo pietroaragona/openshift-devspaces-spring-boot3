@@ -152,22 +152,32 @@ components:
       mountSources: true
 
 commands:
-#  - id: install-plugins
-#    exec:
-#      label: 0.1 - Initial Plugins
-#      component: tools
-#      workingDir: ${PROJECTS_ROOT}
-#      commandLine: |
-#        curl https://openvsxorg.blob.core.windows.net/resources/redhat/java/linux-x64/1.16.2023030303/redhat.java-1.16.2023030303@linux-x64.vsix -O
-#        code-oss --install-extension redhat.java-1.16.2023030303\@linux-x64.vsix
-#        rm -f redhat.java-1.16.2023030303\@linux-x64.vsix
-#
-#        /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "vscjava.vscode-java-pack"
-#        /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "pivotal.vscode-boot-dev-pack"
-#        /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "sonarsource.sonarlint-vscode"
-#        # /checode/checode-linux-libc/bin/remote-cli/code-oss --install-extension "redhat.fabric8-analytics"
-
   - id: setup-environment
+    exec:
+      label: Task automatico
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: |
+        # set java version
+        . /home/user/.sdkman/bin/sdkman-init.sh
+        JAVA_V=17.0.3-tem
+        sdk install java $JAVA_V
+        sdk default java $JAVA_V
+
+        # configure settings.xml and .npmrc
+        setup_configurations_files(){
+          MVN_SETTINGS_REMOTE="https://alm-repos.sogei.it/repository/codeready-plugins/assets/settings-https-v1.xml"
+          mkdir -p /home/user/.m2
+          wget  -q --no-check-certificate $MVN_SETTINGS_REMOTE -O /home/user/.m2/settings.xml
+        
+          echo registry=https://alm-repos.sogei.it/repository/npm-group/ > /home/user/.npmrc
+        }
+        setup_configurations_files
+
+        # configure git credential.helper
+        git config --global credential.helper 'cache --timeout 36000'
+
+  - id: download-repos
     exec:
       label: 0.1 - Initial Environment Setup
       component: tools
@@ -248,3 +258,6 @@ commands:
 ##    - install-plugins
 ##    - setup-environment
 ##    - setup-databases
+events:
+  postStart:
+    - setup-environment

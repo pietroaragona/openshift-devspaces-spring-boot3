@@ -95,8 +95,10 @@ commands:
       commandLine: |
         # set java version
         . /home/user/.sdkman/bin/sdkman-init.sh
-        sdk install java 17.0.3-tem
-        sdk default java 17.0.3-tem
+        JAVA_V=17.0.3-tem
+        sdk install java $JAVA_V
+        sdk default java $JAVA_V
+
         # configure settings.xml and .npmrc
         setup_configurations_files(){
           MVN_SETTINGS_REMOTE="https://alm-repos.sogei.it/repository/codeready-plugins/assets/settings-https-v1.xml"
@@ -106,6 +108,7 @@ commands:
           echo registry=https://alm-repos.sogei.it/repository/npm-group/ > /home/user/.npmrc
         }
         setup_configurations_files
+
         # configure git credential.helper
         git config --global credential.helper 'cache --timeout 36000'
 
