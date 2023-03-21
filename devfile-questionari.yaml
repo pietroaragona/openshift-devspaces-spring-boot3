@@ -106,7 +106,7 @@ commands:
       label: 0.9 - Download Repos
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/setup-questionari-v1.sh | bash
+      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/setup-questionari-v2.sh | bash
 
   - id: run-debug
     exec:
