@@ -3,6 +3,24 @@ metadata:
   name: PTT
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
+projects:
+  - name: ms-nir
+    git:
+      remotes:
+#        origin: https://SIF1Collection@dev.azure.com/SIF1Collection/DPF-SA-0107/_git/ms-nir
+        origin: https://github.com/pietroaragona/docker-images
+      checkoutFrom:
+        revision: main
+  - name: ms-doc2
+    git:
+      remotes:
+        origin: https://github.com/pietroaragona/simple-liberty-app
+#        origin: https://SIF1Collection@dev.azure.com/SIF1Collection/DPF-SA-0107/_git/ms-doc
+      checkoutFrom:
+        revision: main
+
+
+
 components:
   - name: tools
     container:
