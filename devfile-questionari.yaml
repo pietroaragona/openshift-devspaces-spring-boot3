@@ -14,7 +14,7 @@ components:
 #        - name: spring_profiles_active
 #          value: devspaces
         - name: QUESTIONARI_BE_ROOT
-          value: /projects/questionari-inviti-be/QUESTIONARI
+          value: /projects/questionari-inviti-be
       endpoints:
         - exposure: none
           name: debug
