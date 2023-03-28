@@ -6,7 +6,7 @@ metadata:
 components:
   - name: tools
     container:
-      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.2
+      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.3
       env:
         - name: spring_profiles_active
           value: devspaces
@@ -106,6 +106,7 @@ commands:
           wget  -q --no-check-certificate $MVN_SETTINGS_REMOTE -O /home/user/.m2/settings.xml
         
           echo registry=https://alm-repos.sogei.it/repository/npm-group/ > /home/user/.npmrc
+          echo cafile=/etc/pki/ca-trust/source/anchors/alm-repos.sogei.it-ca.crt >> /home/user/.npmrc
         }
         setup_configurations_files
 
