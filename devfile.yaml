@@ -1,6 +1,6 @@
 schemaVersion: 2.2.0
 metadata:
-  name: PTT
+  name: PTT-test-projects
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
 projects:
