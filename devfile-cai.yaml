@@ -1,6 +1,6 @@
 schemaVersion: 2.2.0
 metadata:
-  name: SVEVA
+  name: CAI
 #attributes:
 #  controller.devfile.io/storage-type: ephemeral
 components:
@@ -119,7 +119,7 @@ commands:
       label: 0.2 - Download Repos
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/sveva/setup-sveva-v1.sh | bash
+      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/cai/setup-cai-v1.sh | bash
 
 
   - id: run-debug
