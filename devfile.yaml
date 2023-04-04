@@ -151,6 +151,22 @@ components:
       memoryLimit: 768Mi
       mountSources: true
 
+  - name: cloudbeaver
+    container:
+#      image: 'alm-repos.sogei.it/devfile/cloudbeaver:23.0.1_v1.0.0'
+      image: 'dbeaver/cloudbeaver:23.0.1'
+      endpoints:
+        - name: cloudbeaver-ui
+          targetPort: 8978
+      volumeMounts:
+        - name: cloudbeaver-vol
+          path: /opt/cloudbeaver/workspace
+      memoryLimit: 768Mi
+      mountSources: true
+  - name: cloudbeaver-vol
+    volume:
+      size: 50M
+
 commands:
   - id: setup-environment
     exec:
