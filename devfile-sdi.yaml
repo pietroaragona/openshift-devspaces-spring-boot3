@@ -142,7 +142,33 @@ components:
         - name: SERVER_PORT
           value: "8888"
 
-#  - name: oracle
+
+  - name: mongo
+    container:
+      image: mongo:5
+      env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "root"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: "MyPassword"
+      endpoints:
+        - name: mongo-svc
+          targetPort: 27017
+          exposure: internal
+      volumeMounts:
+        - name: mongo-vol
+          path: /data/db
+      memoryRequest: 64M
+      memoryLimit: 768M
+      cpuRequest: 10m
+      cpuLimit: 50m
+
+
+  - name: mongo-vol
+    volume:
+      size: 2Gi
+        
+        - #  - name: oracle
 #    container:
 #      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
 #      command:
