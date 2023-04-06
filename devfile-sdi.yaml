@@ -152,9 +152,9 @@ components:
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: "MyPassword"
       endpoints:
-        - name: mongo-svc
+        - name: mongo
           targetPort: 27017
-          exposure: internal
+          exposure: public
       volumeMounts:
         - name: mongo-vol
           path: /data/db
@@ -167,7 +167,21 @@ components:
   - name: mongo-vol
     volume:
       size: 1G
-        
+
+  - name: mongo-ui
+    container:
+      image: mongo-express:0.54.0
+      env:
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          value: "root"
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          value: "MyPassword"
+#        - name: ME_CONFIG_MONGODB_URL
+#          value: mongodb://root:MyPassword@localhost:27017/
+        - name: ME_CONFIG_MONGODB_SERVER
+          value: localhost
+
+
 #  - name: oracle
 #    container:
 #      image: 'alm-repos.sogei.it/ptt/oracle-init:1.1'
