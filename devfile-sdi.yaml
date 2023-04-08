@@ -211,7 +211,7 @@ commands:
       label: 0.1 - Initial Environment Setup
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/sdi/setup-sdi-v1.sh | bash
+      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/sdi/setup-sdi-v2.sh | bash
 
 #  - id: setup-databases
 #    exec:
