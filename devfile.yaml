@@ -228,7 +228,7 @@ commands:
         
         configure_microservice_schema ms-nir
         configure_microservice_schema ms-doc
-
+        configure_microservice_schema ms-gestionepec
 
 
 
