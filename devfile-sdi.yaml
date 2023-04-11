@@ -6,7 +6,7 @@ metadata:
 components:
   - name: tools
     container:
-      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.2
+      image: alm-repos.sogei.it/devfile/universal-developer-image:ubi8-4407fa4_v2.4
 #      env:
 #        - name: spring_profiles_active
 #          value: devspaces
