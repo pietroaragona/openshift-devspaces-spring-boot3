@@ -166,10 +166,10 @@ components:
       volumeMounts:
         - name: mongo-vol
           path: /data/db
-#      memoryRequest: 64M
-#      memoryLimit: 768M
-#      cpuRequest: 10m
-#      cpuLimit: 50m
+      memoryRequest: 64M
+      memoryLimit: 768M
+      cpuRequest: 10m
+      cpuLimit: 500m
 
 
   - name: mongo-vol
