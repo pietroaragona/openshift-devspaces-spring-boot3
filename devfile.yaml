@@ -28,7 +28,7 @@ components:
           targetPort: 5001
           path: /nir/1
         - exposure: public
-          name: ms-BFF
+          name: ms-bff
           protocol: http
           targetPort: 5002
           path: /
