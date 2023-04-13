@@ -146,7 +146,7 @@ components:
 
   - name: mongo
     container:
-      image: alm-repos.sogei.it/devfile/mongo-rs:5_v1.0.3
+      image: alm-repos.sogei.it/devfile/mongo-rs:5_v1.0.4
       env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: "root"
