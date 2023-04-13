@@ -124,7 +124,7 @@ components:
 
   - name: kafka-ui
     container:
-      image: provectuslabs/kafka-ui:v0.5.0
+      image: provectuslabs/kafka-ui:v0.6.1
       endpoints:
         - name: kafka-ui
           targetPort: 8888
@@ -146,7 +146,7 @@ components:
 
   - name: mongo
     container:
-      image: alm-repos.sogei.it/devfile/mongo-rs:5_v1.0.0
+      image: alm-repos.sogei.it/devfile/mongo-rs:5_v1.0.1
       env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: "root"
