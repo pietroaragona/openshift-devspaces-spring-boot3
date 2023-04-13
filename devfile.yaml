@@ -27,6 +27,11 @@ components:
           protocol: http
           targetPort: 5001
           path: /nir/1
+        - exposure: public
+          name: ms-BFF
+          protocol: http
+          targetPort: 5002
+          path: /
       volumeMounts:
         - name: m2
           path: /home/user/.m2
@@ -124,7 +129,7 @@ components:
 
   - name: kafka-ui
     container:
-      image: provectuslabs/kafka-ui:v0.5.0
+      image: provectuslabs/kafka-ui:v0.6.1
       endpoints:
         - name: kafka-ui
           targetPort: 8888
@@ -184,7 +189,7 @@ commands:
       label: 0.1 - Initial Environment Setup
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v8.sh | bash
+      commandLine: curl -s https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/setup-ptt-v9.sh | bash
 
   - id: setup-databases
     exec:
