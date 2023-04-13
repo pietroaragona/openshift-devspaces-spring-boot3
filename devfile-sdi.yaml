@@ -124,7 +124,7 @@ components:
 
   - name: kafka-ui
     container:
-      image: provectuslabs/kafka-ui:v0.5.0
+      image: provectuslabs/kafka-ui:v0.6.1
       endpoints:
         - name: kafka-ui
           targetPort: 8888
@@ -146,23 +146,30 @@ components:
 
   - name: mongo
     container:
-      image: mongo:5
+      image: alm-repos.sogei.it/devfile/mongo-rs:5_v1.0.6
       env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: "root"
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: "MyPassword"
+        - name: MONGO_INITDB_USERNAME
+          value: "user1"
+        - name: MONGO_INITDB_PASSWORD
+          value: "userpass"
+        - name: MONGO_INITDB_DATABASE
+          value: "sdi"
       endpoints:
         - name: mongo-svc
           targetPort: 27017
           exposure: internal
+          protocol: tcp
       volumeMounts:
         - name: mongo-vol
           path: /data/db
-#      memoryRequest: 64M
-#      memoryLimit: 768M
-#      cpuRequest: 10m
-#      cpuLimit: 50m
+      memoryRequest: 64M
+      memoryLimit: 768M
+      cpuRequest: 10m
+      cpuLimit: 500m
 
 
   - name: mongo-vol
