@@ -153,9 +153,9 @@ components:
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: "MyPassword"
         - name: MONGO_INITDB_USERNAME
-          value: "user1"
+          value: "sdiuser"
         - name: MONGO_INITDB_PASSWORD
-          value: "userpass"
+          value: "sdiuser"
         - name: MONGO_INITDB_DATABASE
           value: "sdi"
       endpoints:
