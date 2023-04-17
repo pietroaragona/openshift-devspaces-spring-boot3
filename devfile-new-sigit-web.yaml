@@ -80,7 +80,7 @@ components:
 commands:
   - id: setup-environment
     exec:
-      label: 0.1 - Initial Environment Setup
+      label: Task automatico
       component: tools
       workingDir: ${PROJECTS_ROOT}
       commandLine: |
