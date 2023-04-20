@@ -202,7 +202,7 @@ commands:
 
         # configure settings.xml and .npmrc
         setup_configurations_files(){
-          MVN_SETTINGS_REMOTE="https://alm-repos.sogei.it/repository/codeready-plugins/assets/settings-https-v1.xml"
+          MVN_SETTINGS_REMOTE="https://alm-repos.sogei.it/repository/codeready-plugins/assets/settings-https-v3.xml"
           mkdir -p /home/user/.m2
           wget  -q --no-check-certificate $MVN_SETTINGS_REMOTE -O /home/user/.m2/settings.xml
         
