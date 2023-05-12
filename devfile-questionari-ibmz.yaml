@@ -1,0 +1,169 @@
+# devfile-questionari.yaml
+# TP:   TP-ENT-SA-0166
+# Desc: Registro dei Questionari e Inviti
+schemaVersion: 2.2.0
+metadata:
+  name: Questionari-IBM-z
+#attributes:
+#  controller.devfile.io/storage-type: ephemeral
+components:
+  - name: tools
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel8:3.5
+#      image: quay.io/devfile/universal-developer-image:ubi8-4407fa4
+      env:
+#        - name: spring_profiles_active
+#          value: devspaces
+        - name: QUESTIONARI_BE_ROOT
+          value: /projects/questionari-inviti-be
+      endpoints:
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 7777
+        - exposure: public
+          name: app-be
+          protocol: http
+          targetPort: 9080
+          path: /openapi/ui
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+      memoryLimit: 3G
+      cpuLimit: 1500m
+      cpuRequest: 400m
+      mountSources: true
+
+  - name: m2
+    volume:
+      size: 2G
+
+commands:
+  - id: setup-environment
+    exec:
+      label: 0.1 - Initial Environment Setup
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: |
+        # set java version
+        . /home/user/.sdkman/bin/sdkman-init.sh
+        JAVA_V=17.0.3-tem
+        sdk install java $JAVA_V
+        sdk default java $JAVA_V
+
+        # configure settings.xml and .npmrc
+        setup_configurations_files(){
+          MVN_SETTINGS_REMOTE="https://alm-repos.sogei.it/repository/codeready-plugins/assets/settings-https-v1.xml"
+          mkdir -p /home/user/.m2
+          wget  -q --no-check-certificate $MVN_SETTINGS_REMOTE -O /home/user/.m2/settings.xml
+          
+          echo registry=https://alm-repos.sogei.it/repository/npm-group/ > /home/user/.npmrc
+          echo cafile=/etc/pki/ca-trust/source/anchors/alm-repos.sogei.it-ca.crt >> /home/user/.npmrc
+        }
+        setup_configurations_files
+
+        # configure git credential.helper
+        git config --global credential.helper 'cache --timeout 36000'
+
+  - id: install-cadmanager-jars
+    exec:
+      label: 0.2 - Install CadManager Jars
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: |
+
+        POM_FILE=/tmp/miopom.xml
+        CADMANAGER_FILE=/tmp/CadManager.jar
+        CADMANAGERWSCLIENT_FILE=/tmp/CadManagerWebServiceClient.jar.jar
+
+        cat <<EOF > $POM_FILE
+        <?xml version="1.0" encoding="UTF-8"?>
+        <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+        <groupId>it.sogei.entrate.questionari</groupId>
+        <artifactId>install-jars</artifactId>
+        <version>1</version>
+        </project>
+        EOF
+
+        upload_1(){
+          curl -k https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/CadManager.jar -o $CADMANAGER_FILE
+          mvn -f $POM_FILE install:install-file -Dfile=$CADMANAGER_FILE -DgroupId=it.entrate.consumer.cad -DartifactId=CadManager -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+          rm -f $CADMANAGER_FILE
+        }
+
+        upload_2(){
+          curl -k https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/CadManagerWebServiceClient.jar -o $CADMANAGERWSCLIENT_FILE
+          mvn -f $POM_FILE install:install-file -Dfile=$CADMANAGERWSCLIENT_FILE -DgroupId=it.entrate.cad -DartifactId=CadManagerWebServiceClient -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+          rm -f $CADMANAGERWSCLIENT_FILE
+        }
+
+        upload_1
+        upload_2
+
+        rm -f $POM_FILE
+
+  - id: download-repos
+    exec:
+      label: 0.9 - Download Repos
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: curl -ks https://alm-repos.sogei.it/repository/codeready-plugins/assets/scripts/questionari/setup-questionari-v3.sh | bash
+
+  - id: run-debug
+    exec:
+      label: 1 - Run liberty:debug
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:debug
+      group:
+        kind: run
+        isDefault: false
+
+  - id: run-dev
+    exec:
+      label: 2 - Run liberty:dev
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:dev
+      group:
+        kind: run
+        isDefault: true
+
+  - id: run-start
+    exec:
+      label: 3 - Run liberty:start
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:start
+      group:
+        kind: run
+        isDefault: false
+
+  - id: run-stop
+    exec:
+      label: 4 - Run liberty:stop
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: |
+        #mvn -f ${QUESTIONARI_BE_ROOT}/ install
+        mvn -f ${QUESTIONARI_BE_ROOT}/QUESTIONARI-project/ liberty:stop
+      group:
+        kind: run
+        isDefault: false
+
+#   - id: composite-initial-setup
+#     composite:
+#       commands:
+##         - setup-environment
+#         - install-cadmanager-jars
+#events:
+#  postStart:
+#    - setup-environment
+
