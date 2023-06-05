@@ -9,11 +9,11 @@ metadata:
 components:
   - name: tools
     container:
-      image: alm-repos.sogei.it/devfile/universal-developer-image:3.6_s390x_v1.0.0
+      image: alm-repos.sogei.it/devfile/universal-developer-image:3.6_s390x_v1.1.0
 #      image: quay.io/devfile/universal-developer-image:ubi8-4407fa4
       env:
-#        - name: spring_profiles_active
-#          value: devspaces
+        - name: spring_profiles_active
+          value: devspaces
         - name: QUESTIONARI_BE_ROOT
           value: /projects/questionari-inviti-be
       endpoints:
