@@ -29,8 +29,9 @@ components:
         - name: m2
           path: /home/user/.m2
       memoryLimit: 3G
+      memoryRequest: 1G
       cpuLimit: 1500m
-      cpuRequest: 400m
+      cpuRequest: 200m
       mountSources: true
 
   - name: m2
