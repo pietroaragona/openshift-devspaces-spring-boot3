@@ -117,11 +117,11 @@ components:
 
   - name: mongo-vol
     volume:
-#      ephemeral: true
+      ephemeral: true
       size: 1G
   - name: mongo-config
     volume:
-#      ephemeral: true
+      ephemeral: true
       size: 50M
 
 commands:
